@@ -226,7 +226,7 @@ public class TaskManager extends Printer {
     }
 
     public String setNewSubtaskId(int subtaskId, String newSubtaskStatus) {
-        if (checkExceptionForEpicsAndSubtasks(subtasksId)){
+        if (checkExceptionForEpicsAndSubtasks(subtaskId)){
             return null;
         }
 
