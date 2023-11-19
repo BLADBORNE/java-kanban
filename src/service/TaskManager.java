@@ -102,6 +102,10 @@ public class TaskManager extends Printer {
         }
 
         epics.clear();
+
+        if (!subtasks.isEmpty()) {
+            subtasks.clear();
+        }
     }
 
     public Epic getEpicById(int epicId) {
@@ -150,6 +154,12 @@ public class TaskManager extends Printer {
         }
 
         epics.remove(epicId);
+
+        for (Subtask value : subtasks.values()) {
+            if (value.getEpicId() == epicId) {
+                subtasks.remove(value.getId());
+            }
+        }
     }
 
     public HashMap<Integer, Subtask> getSubtasks() {
@@ -157,7 +167,7 @@ public class TaskManager extends Printer {
     }
 
     public Subtask getSubtaskById(int subtasksId) {
-        if (checkExceptionForEpicsAndSubtasks(subtasksId)){
+        if (checkExceptionForEpicsAndSubtasks(subtasksId)) {
             return null;
         }
 
@@ -226,7 +236,7 @@ public class TaskManager extends Printer {
     }
 
     public String setNewSubtaskId(int subtaskId, String newSubtaskStatus) {
-        if (checkExceptionForEpicsAndSubtasks(subtaskId)){
+        if (checkExceptionForEpicsAndSubtasks(subtaskId)) {
             return null;
         }
 
