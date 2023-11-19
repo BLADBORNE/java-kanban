@@ -34,6 +34,10 @@ public class Task {
         return id;
     }
 
+    public void setStatus(String status) {
+        Status = status;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
@@ -45,5 +49,15 @@ public class Task {
     @Override
     public int hashCode() {
         return Objects.hash(taskName, description, Status, id);
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "taskName='" + taskName + '\'' +
+                ", description='" + description.length() + '\'' +
+                ", Status='" + Status + '\'' +
+                ", id=" + id +
+                '}';
     }
 }

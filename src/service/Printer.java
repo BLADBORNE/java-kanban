@@ -24,6 +24,8 @@ public class Printer {
         System.out.println("4 — Создание новой задачи");
         System.out.println("5 — Обновление задачи");
         System.out.println("6 — Удаление по идентификатору");
+        System.out.println("7 — Проставление статуса задачи");
+        System.out.println("6 — Просмотр статусов всех задач");
         System.out.println("0 — Выйти в главное меню");
     }
 
@@ -33,7 +35,7 @@ public class Printer {
         } else {
             System.out.println("Список простых задач");
             for (Task value : tasks.values()) {
-                System.out.println(value.getId() + " " + value.getTaskName());
+                System.out.println(value.getTaskName());
             }
         }
     }
@@ -59,6 +61,5 @@ public class Printer {
     public void printTextIfCmdNtFnd() {
         System.out.println("Извините, такой команды нет");
     }
-
 
 }
