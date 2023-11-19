@@ -11,10 +11,14 @@ public class Main {
                 "Прогуляться по парку");
 
         System.out.println(taskManager.getTasks());
+        System.out.println();
 
+        taskManager.createNewEpic("Переезд", "Нужно переехать в новый дом");
+        taskManager.createNewSubtask("Собрать вещи", "Нужно положить все вещи в коробки", 0);
+        taskManager.createNewSubtask("Выкинуть хлам", "Все ненужное отнести на помойку", 0);
 
-
-
+        System.out.println(taskManager.getEpics());
+        System.out.println();
 
 
     }

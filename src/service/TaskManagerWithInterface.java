@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class TaskManagerWithInterface extends Printer{
+public class TaskManagerWithInterface extends Printer {
     private Scanner scanner = new Scanner(System.in);
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, ArrayList<Epic>> epics = new HashMap<>();
@@ -125,11 +125,6 @@ public class TaskManagerWithInterface extends Printer{
         System.out.println("Задача " + taskName + " успешно создана!");
         return new Task(taskName, description, taskId++);
     }
-
-
-//    public Task createNewTaskTest(String taskName, String description) {
-//        return new Task(taskName, description, taskId++);
-//    }
 
     private void updateTask() {
         if (tasks.isEmpty()) {
