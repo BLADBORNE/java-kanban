@@ -1,17 +1,16 @@
 package model;
 
-import java.util.Objects;
-
 public class Task {
+    protected int id;
     protected String taskName;
     protected String description;
-    protected String Status = "New";
-    protected int id;
+    protected String status;
 
-    public Task(String taskName, String description, int id) {
+    public Task(int id, String taskName, String description) {
+        this.id = id;
         this.taskName = taskName;
         this.description = description;
-        this.id = id;
+        this.status = "NEW";
     }
 
     public void setId(int id) {
@@ -27,7 +26,7 @@ public class Task {
     }
 
     public String getStatus() {
-        return Status;
+        return status;
     }
 
     public int getId() {
@@ -35,16 +34,16 @@ public class Task {
     }
 
     public void setStatus(String status) {
-        Status = status;
+        this.status = status;
     }
 
     @Override
     public String toString() {
         return "Task{" +
-                "taskName='" + taskName + '\'' +
+                "id=" + id +
+                ", taskName='" + taskName + '\'' +
                 ", description='" + description.length() + '\'' +
-                ", Status='" + Status + '\'' +
-                ", id=" + id +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

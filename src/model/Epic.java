@@ -5,8 +5,8 @@ import java.util.HashMap;
 public class Epic extends Task {
     private HashMap<Integer, Subtask> subtask = new HashMap<>();
 
-    public Epic(String taskName, String description, int id) {
-        super(taskName, description, id);
+    public Epic(int id, String taskName, String description) {
+        super(id, taskName, description);
     }
 
     public HashMap<Integer, Subtask> getSubtask() {
@@ -16,11 +16,11 @@ public class Epic extends Task {
     @Override
     public String toString() {
         return "Epic{" +
-                "epicName='" + taskName + '\'' +
+                "id=" + id +
+                ", taskName='" + taskName + '\'' +
                 ", description='" + description.length() + '\'' +
-                ", Status='" + Status + '\'' +
-                ", id=" + id +
-                ", subtask=" + subtask +
+                ", status='" + status + '\'' +
+                "subtask=" + subtask +
                 '}';
     }
 }

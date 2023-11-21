@@ -14,38 +14,38 @@ public class Main {
         System.out.println();
 
         taskManager.createNewEpic("Переезд", "Нужно переехать в новый дом");
-        taskManager.createNewSubtask("Собрать вещи", "Нужно положить все вещи в коробки", 0);
-        taskManager.createNewSubtask("Выкинуть хлам", "Все ненужное отнести на помойку", 0);
+        taskManager.createNewSubtask("Собрать вещи", "Нужно положить все вещи в коробки", 3);
+        taskManager.createNewSubtask("Выкинуть хлам", "Все ненужное отнести на помойку", 3);
 
 
         taskManager.createNewEpic("Позаниматься", "Подкачать мышцы");
-        taskManager.createNewSubtask("Сходить в зал", "Побегать 10, Потом силовая", 1);
+        taskManager.createNewSubtask("Сходить в зал", "Побегать 10, Потом силовая", 6);
 
         System.out.println(taskManager.getEpics());
         System.out.println();
 
-        taskManager.setNewTaskId(0, "Done");
-        taskManager.setNewTaskId(1, "In progress");
+        taskManager.setNewTaskId(1, "DONE");
+        taskManager.setNewTaskId(2, "IN_PROGRESS");
 
-        System.out.println(taskManager.getTaskById(0).getStatus());
         System.out.println(taskManager.getTaskById(1).getStatus());
+        System.out.println(taskManager.getTaskById(2).getStatus());
         System.out.println();
 
-        taskManager.setNewSubtaskId(0, "Done");
-        taskManager.setNewSubtaskId(1, "Done");
+        taskManager.setNewSubtaskId(4, "DONE");
+        taskManager.setNewSubtaskId(5, "DONE");
 
-        System.out.println(taskManager.getSubtaskById(0).getStatus());
-        System.out.println(taskManager.getSubtaskById(1).getStatus());
+        System.out.println(taskManager.getSubtaskById(4).getStatus());
+        System.out.println(taskManager.getSubtaskById(5).getStatus());
 
-        System.out.println(taskManager.getEpicById(0).getStatus());
+        System.out.println(taskManager.getEpicById(3).getStatus());
         System.out.println();
 
-        taskManager.deleteTaskById(1);
+        taskManager.deleteTaskById(2);
 
         System.out.println(taskManager.getTasks());
         System.out.println();
 
-        taskManager.deleteEpicById(1);
+        taskManager.deleteEpicById(6);
 
         System.out.println(taskManager.getEpics());
         System.out.println();
