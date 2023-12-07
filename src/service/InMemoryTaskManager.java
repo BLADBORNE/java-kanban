@@ -307,10 +307,12 @@ public class InMemoryTaskManager implements TaskManager {
         int countDoneStatusForTasks = 0;
 
         for (Subtask value : subtasksIdLists.values()) {
-            if (value.getStatus().equals(TaskStatus.DONE)) {
-                countDoneStatusForTasks++;
-            } else if (value.getStatus().equals(TaskStatus.NEW)) {
-                countNewStatusForTasks++;
+            switch (value.getStatus()) {
+                case DONE:
+                    countDoneStatusForTasks++;
+                    break;
+                case NEW:
+                    countNewStatusForTasks++;
             }
         }
 
