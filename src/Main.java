@@ -1,5 +1,8 @@
+import model.Task;
 import model.TaskStatus;
 import service.InMemoryTaskManager;
+
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -49,5 +52,10 @@ public class Main {
 
         System.out.println(inMemoryTaskManager.getEpics());
         System.out.println();
+
+        List<Task> tasks = inMemoryTaskManager.getHistoryManager().getHistory();
+        for (Task task : tasks) {
+            System.out.println(task.getId());
+        }
     }
 }

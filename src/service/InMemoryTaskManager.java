@@ -5,15 +5,13 @@ import model.Subtask;
 import model.Task;
 import model.TaskStatus;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    private final List<Task> viewedTasks = new ArrayList<>();
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
     private int taskId = 0;
 
     @Override
@@ -42,7 +40,8 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("Извините, у нас нет задачи с таким id");
             return null;
         }
-        checkTenSizeOfViewedTasks(tasks.get(taskId));
+
+        historyManager.add(tasks.get(taskId));
         return tasks.get(taskId);
     }
 
@@ -130,8 +129,7 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("Изаините, у нас нет эпика с таким id");
             return null;
         }
-
-        checkTenSizeOfViewedTasks(epics.get(taskId));
+        historyManager.add(epics.get(epicId));
         return epics.get(epicId);
     }
 
@@ -188,7 +186,8 @@ public class InMemoryTaskManager implements TaskManager {
         if (checkExceptionForEpicsAndSubtasks(subtasksId)) {
             return null;
         }
-        checkTenSizeOfViewedTasks(subtasks.get(taskId));
+
+        historyManager.add(subtasks.get(subtasksId));
         return subtasks.get(subtasksId);
     }
 
@@ -336,21 +335,7 @@ public class InMemoryTaskManager implements TaskManager {
         return ++taskId;
     }
 
-    private void checkTenSizeOfViewedTasks(Task task) {
-        if (viewedTasks.size() == 10) {
-            viewedTasks.remove(0);
-            viewedTasks.add(task);
-        } else {
-            viewedTasks.add(task);
-        }
-    }
-
-    @Override
-    public List<Task> getHistory() {
-        if (viewedTasks.isEmpty()) {
-            System.out.println("Вы еще не просмотрели ни одну задачу");
-            return null;
-        }
-        return viewedTasks;
+    public HistoryManager getHistoryManager() {
+        return historyManager;
     }
 }

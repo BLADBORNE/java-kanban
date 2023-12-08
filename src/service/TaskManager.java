@@ -6,7 +6,6 @@ import model.Task;
 import model.TaskStatus;
 
 import java.util.HashMap;
-import java.util.List;
 
 public interface TaskManager {
     public HashMap<Integer, Task> getTasks();
@@ -48,6 +47,4 @@ public interface TaskManager {
     TaskStatus setNewSubtaskId(int subtaskId, TaskStatus newSubtaskStatus) ;
 
     int generateId();
-    List<Task> getHistory();
-
 }
