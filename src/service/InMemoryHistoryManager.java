@@ -22,7 +22,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     public List<Task> getHistory() {
         if (viewedTasks.isEmpty()) {
             System.out.println("Вы еще не просмотрели ни одну задачу");
-            return null;
+            return new ArrayList<>();
         }
         return viewedTasks;
     }

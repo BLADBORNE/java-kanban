@@ -6,6 +6,7 @@ import model.Task;
 import model.TaskStatus;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> tasks = new HashMap<>();
@@ -232,7 +233,6 @@ public class InMemoryTaskManager implements TaskManager {
         subtasks.put(newSubtask.getId(), newSubtask);
 
         updateEpicStatus(epic);
-
     }
 
     @Override
@@ -312,6 +312,7 @@ public class InMemoryTaskManager implements TaskManager {
                     break;
                 case NEW:
                     countNewStatusForTasks++;
+                    break;
             }
         }
 
@@ -335,7 +336,8 @@ public class InMemoryTaskManager implements TaskManager {
         return ++taskId;
     }
 
-    public HistoryManager getHistoryManager() {
-        return historyManager;
+    @Override
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
     }
 }

@@ -1,12 +1,15 @@
+import model.Subtask;
 import model.Task;
 import model.TaskStatus;
 import service.InMemoryTaskManager;
+import service.Managers;
+import service.TaskManager;
 
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+        TaskManager inMemoryTaskManager = Managers.getDefault();
         inMemoryTaskManager.createNewTask("Посмотреть видео на ютубе",
                 "Посмотреть последнее видео Димы Масленникова");
 
@@ -53,7 +56,7 @@ public class Main {
         System.out.println(inMemoryTaskManager.getEpics());
         System.out.println();
 
-        List<Task> tasks = inMemoryTaskManager.getHistoryManager().getHistory();
+        List<Task> tasks = inMemoryTaskManager.getHistory();
         for (Task task : tasks) {
             System.out.println(task.getId());
         }
