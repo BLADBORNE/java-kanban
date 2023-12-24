@@ -5,6 +5,7 @@ import model.Subtask;
 import model.Task;
 import model.TaskStatus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -79,6 +80,7 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("Извините, у нас такой заадчи нет");
             return;
         }
+        historyManager.remove(taskId);
         tasks.remove(taskId);
     }
 
@@ -130,7 +132,15 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("Изаините, у нас нет эпика с таким id");
             return null;
         }
+
         historyManager.add(epics.get(epicId));
+        HashMap<Integer, Subtask> epicSubtasks = epics.get(epicId).getSubtask();
+
+        if (!epicSubtasks.isEmpty()) {
+            for (Subtask subtask : epicSubtasks.values()) {
+                historyManager.add(subtask);
+            }
+        }
         return epics.get(epicId);
     }
 
@@ -168,12 +178,19 @@ public class InMemoryTaskManager implements TaskManager {
             return;
         }
 
+        HashMap<Integer, Subtask> epicSubtasks = epics.get(epicId).getSubtask();
+
+        historyManager.remove(epicId);
         epics.remove(epicId);
 
-        for (Subtask value : subtasks.values()) {
-            if (value.getEpicId() == epicId) {
-                subtasks.remove(value.getId());
+        if (!epicSubtasks.isEmpty()) {
+            List<Integer> subtaskList = new ArrayList<>();
+            for (Subtask value : subtasks.values()) {
+                if (value.getEpicId() == epicId) {
+                    subtaskList.add(value.getId());
+                }
             }
+            subtaskList.forEach(subtasks.keySet()::remove);
         }
     }
 
@@ -257,6 +274,7 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(subtask.getEpicId());
         HashMap<Integer, Subtask> subtasksIdLists = epic.getSubtask();
         subtasksIdLists.remove(subtaskId);
+        historyManager.remove(subtaskId);
         subtasks.remove(subtaskId);
 
         updateEpicStatus(epic);
