@@ -14,22 +14,11 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        if (customLinkedList.size() == 10) {
-            if (customLinkedList.containsKey(task.getId())) {
-                remove(task.getId());
-                linkLast(task);
-            } else {
-                Task taskNode = head.data;
-                remove(taskNode.getId());
-                linkLast(task);
-            }
+        if (customLinkedList.containsKey(task.getId())) {
+            remove(task.getId());
+            linkLast(task);
         } else {
-            if (customLinkedList.containsKey(task.getId())) {
-                remove(task.getId());
-                linkLast(task);
-            } else {
-                linkLast(task);
-            }
+            linkLast(task);
         }
     }
 
@@ -103,10 +92,10 @@ public class InMemoryHistoryManager implements HistoryManager {
     private List<Task> getTasks() {
         if (!customLinkedList.isEmpty()) {
             List<Task> taskList = new ArrayList<>();
-            Node<Task> curNode = head;
+            Node<Task> curNode = tail;
             while (curNode != null) {
                 taskList.add(curNode.data);
-                curNode = curNode.next;
+                curNode = curNode.prev;
             }
             return taskList;
         }
