@@ -30,7 +30,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (oldTail == null) {
             head = newTail;
         } else {
-            oldTail.next = newTail;
+            oldTail.setNext(newTail);
         }
     }
 
@@ -39,7 +39,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (!customLinkedList.isEmpty()) {
             if (customLinkedList.containsKey(id)) {
                 Node<Task> node = customLinkedList.get(id);
-                Task task = node.data;
+                Task task = node.getData();
                 if (task instanceof Epic) {
                     Epic epic = (Epic) task;
                     if (!epic.getSubtask().isEmpty()) {
@@ -68,24 +68,24 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     private void removeNode(Node<Task> node) {
-        final Node<Task> prevNode = node.prev;
-        final Node<Task> nextNode = node.next;
+        final Node<Task> prevNode = node.getPrev();
+        final Node<Task> nextNode = node.getNext();
 
         if (prevNode != null) {
-            prevNode.next = nextNode;
+            prevNode.setNext(nextNode);
         } else {
             head = nextNode;
         }
 
         if (nextNode != null) {
-            nextNode.prev = prevNode;
+            nextNode.setPrev(prevNode);
         } else {
             tail = prevNode;
         }
 
-        node.prev = null;
-        node.next = null;
-        node.data = null;
+        node.setNext(null);
+        node.setData(null);
+        node.setPrev(null);
     }
 
 
@@ -94,8 +94,8 @@ public class InMemoryHistoryManager implements HistoryManager {
             List<Task> taskList = new ArrayList<>();
             Node<Task> curNode = tail;
             while (curNode != null) {
-                taskList.add(curNode.data);
-                curNode = curNode.prev;
+                taskList.add(curNode.getData());
+                curNode = curNode.getPrev();
             }
             return taskList;
         }
