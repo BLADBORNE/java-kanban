@@ -1,4 +1,7 @@
-package model;
+package model.tasks;
+
+import model.enums.TaskStatus;
+import model.enums.TasksForFile;
 
 public class Task {
     protected int id;
@@ -33,17 +36,16 @@ public class Task {
         return id;
     }
 
+    protected TasksForFile getType() {
+        return TasksForFile.TASK;
+    }
+
     public void setStatus(TaskStatus status) {
         this.status = status;
     }
 
     @Override
     public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", taskName='" + taskName + '\'' +
-                ", description='" + description.length() + '\'' +
-                ", status='" + status + '\'' +
-                '}';
+        return String.format("%s,%s,%s,%s,%s,", id, getType(), taskName, status, description);
     }
 }

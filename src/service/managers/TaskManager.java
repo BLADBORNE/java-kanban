@@ -1,9 +1,9 @@
-package service;
+package service.managers;
 
-import model.Epic;
-import model.Subtask;
-import model.Task;
-import model.TaskStatus;
+import model.tasks.Epic;
+import model.tasks.Subtask;
+import model.tasks.Task;
+import model.enums.TaskStatus;
 
 import java.util.HashMap;
 import java.util.List;

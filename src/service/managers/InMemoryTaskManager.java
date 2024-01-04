@@ -1,9 +1,9 @@
-package service;
+package service.managers;
 
-import model.Epic;
-import model.Subtask;
-import model.Task;
-import model.TaskStatus;
+import model.tasks.Epic;
+import model.tasks.Subtask;
+import model.tasks.Task;
+import model.enums.TaskStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -180,8 +180,8 @@ public class InMemoryTaskManager implements TaskManager {
 
         HashMap<Integer, Subtask> epicSubtasks = epics.get(epicId).getSubtask();
 
-        historyManager.remove(epicId);
         epics.remove(epicId);
+        historyManager.remove(epicId);
 
         if (!epicSubtasks.isEmpty()) {
             List<Integer> subtaskList = new ArrayList<>();
@@ -347,6 +347,10 @@ public class InMemoryTaskManager implements TaskManager {
                 epic.setStatus(TaskStatus.IN_PROGRESS);
             }
         }
+    }
+
+    public HistoryManager getHistoryManager() {
+        return historyManager;
     }
 
     @Override

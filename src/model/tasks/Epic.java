@@ -1,4 +1,6 @@
-package model;
+package model.tasks;
+
+import model.enums.TasksForFile;
 
 import java.util.HashMap;
 
@@ -14,13 +16,7 @@ public class Epic extends Task {
     }
 
     @Override
-    public String toString() {
-        return "Epic{" +
-                "id=" + id +
-                ", taskName='" + taskName + '\'' +
-                ", description='" + description.length() + '\'' +
-                ", status='" + status + '\'' +
-                "subtask=" + subtask +
-                '}';
+    public TasksForFile getType() {
+        return TasksForFile.EPIC;
     }
 }

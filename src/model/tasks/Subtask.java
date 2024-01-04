@@ -1,4 +1,6 @@
-package model;
+package model.tasks;
+
+import model.enums.TasksForFile;
 
 public class Subtask extends Task {
     private final int epicId;
@@ -13,13 +15,12 @@ public class Subtask extends Task {
     }
 
     @Override
+    public TasksForFile getType() {
+        return TasksForFile.SUBTASK;
+    }
+
+    @Override
     public String toString() {
-        return "Subtask{" +
-                "id=" + id +
-                ", epicId=" + epicId +
-                ", taskName='" + taskName + '\'' +
-                ", description='" + description.length() + '\'' +
-                ", status='" + status + '\'' +
-                '}';
+        return super.toString() + epicId;
     }
 }

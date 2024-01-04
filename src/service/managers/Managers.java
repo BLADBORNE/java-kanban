@@ -1,4 +1,4 @@
-package service;
+package service.managers;
 
 public class Managers {
     public static TaskManager getDefault() {

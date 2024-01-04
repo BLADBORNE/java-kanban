@@ -1,9 +1,9 @@
-package service;
+package service.managers;
 
-import model.Epic;
-import model.Node;
-import model.Subtask;
-import model.Task;
+import model.tasks.Epic;
+import model.tasks.Node;
+import model.tasks.Subtask;
+import model.tasks.Task;
 
 import java.util.*;
 
@@ -61,7 +61,6 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public List<Task> getHistory() {
         if (getTasks() == null) {
-            System.out.println("Вы еще не просмотрели ни одну задачу");
             return new ArrayList<>();
         }
         return getTasks();

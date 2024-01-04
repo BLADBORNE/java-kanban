@@ -1,4 +1,4 @@
-package model;
+package model.tasks;
 
 public class Node<E> {
     private E data;
