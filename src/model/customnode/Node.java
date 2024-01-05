@@ -1,4 +1,4 @@
-package model.tasks;
+package model.customnode;
 
 public class Node<E> {
     private E data;

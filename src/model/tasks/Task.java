@@ -1,19 +1,21 @@
 package model.tasks;
 
 import model.enums.TaskStatus;
-import model.enums.TasksForFile;
+import model.enums.TaskType;
 
 public class Task {
-    protected int id;
-    protected String taskName;
-    protected String description;
-    protected TaskStatus status;
+    private int id;
+    private final String taskName;
+    private final String description;
+    private TaskStatus status;
+    private TaskType taskType;
 
     public Task(int id, String taskName, String description) {
         this.id = id;
         this.taskName = taskName;
         this.description = description;
         this.status = TaskStatus.NEW;
+        this.taskType = TaskType.TASK;
     }
 
     public void setId(int id) {
@@ -36,8 +38,12 @@ public class Task {
         return id;
     }
 
-    protected TasksForFile getType() {
-        return TasksForFile.TASK;
+    protected TaskType getType() {
+        return taskType;
+    }
+
+    public void setTaskType(TaskType taskType) {
+        this.taskType = taskType;
     }
 
     public void setStatus(TaskStatus status) {

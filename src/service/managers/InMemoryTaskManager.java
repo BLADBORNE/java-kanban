@@ -4,6 +4,8 @@ import model.tasks.Epic;
 import model.tasks.Subtask;
 import model.tasks.Task;
 import model.enums.TaskStatus;
+import service.interfaces.HistoryManager;
+import service.interfaces.TaskManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -134,13 +136,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
 
         historyManager.add(epics.get(epicId));
-        HashMap<Integer, Subtask> epicSubtasks = epics.get(epicId).getSubtask();
 
-        if (!epicSubtasks.isEmpty()) {
-            for (Subtask subtask : epicSubtasks.values()) {
-                historyManager.add(subtask);
-            }
-        }
         return epics.get(epicId);
     }
 

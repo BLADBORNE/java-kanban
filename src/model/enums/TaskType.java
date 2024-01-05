@@ -1,6 +1,6 @@
 package model.enums;
 
-public enum TasksForFile {
+public enum TaskType {
     TASK,
     EPIC,
     SUBTASK

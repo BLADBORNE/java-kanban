@@ -1,9 +1,10 @@
 package service.managers;
 
 import model.tasks.Epic;
-import model.tasks.Node;
+import model.customnode.Node;
 import model.tasks.Subtask;
 import model.tasks.Task;
+import service.interfaces.HistoryManager;
 
 import java.util.*;
 
@@ -44,9 +45,11 @@ public class InMemoryHistoryManager implements HistoryManager {
                     Epic epic = (Epic) task;
                     if (!epic.getSubtask().isEmpty()) {
                         for (Subtask subtask : epic.getSubtask().values()) {
-                            Node<Task> subtaskNode = customLinkedList.get(subtask.getId());
-                            removeNode(subtaskNode);
-                            customLinkedList.remove(subtask.getId());
+                            if (customLinkedList.containsKey(subtask.getId())) {
+                                Node<Task> subtaskNode = customLinkedList.get(subtask.getId());
+                                removeNode(subtaskNode);
+                                customLinkedList.remove(subtask.getId());
+                            }
                         }
                     }
                 }

@@ -1,0 +1,7 @@
+id,type,name,status,description,epic
+1,TASK,Купить автомобиль,NEW,we,
+2,EPIC,new Epic1,NEW,Новый Эпик,
+3,SUBTASK,New Subtask,NEW,Подзадача,2
+4,SUBTASK,New Subtask2,NEW,Подзадача2,2
+
+3,2,1

@@ -1,6 +1,6 @@
 package model.tasks;
 
-import model.enums.TasksForFile;
+import model.enums.TaskType;
 
 import java.util.HashMap;
 
@@ -9,14 +9,10 @@ public class Epic extends Task {
 
     public Epic(int id, String taskName, String description) {
         super(id, taskName, description);
+        setTaskType(TaskType.EPIC);
     }
 
     public HashMap<Integer, Subtask> getSubtask() {
         return subtask;
-    }
-
-    @Override
-    public TasksForFile getType() {
-        return TasksForFile.EPIC;
     }
 }

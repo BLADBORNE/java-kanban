@@ -1,4 +1,4 @@
-package service.managers;
+package service.interfaces;
 
 import model.tasks.Task;
 

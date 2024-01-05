@@ -1,6 +1,6 @@
 package model.tasks;
 
-import model.enums.TasksForFile;
+import model.enums.TaskType;
 
 public class Subtask extends Task {
     private final int epicId;
@@ -8,15 +8,11 @@ public class Subtask extends Task {
     public Subtask(int id, String taskName, String description, int epicId) {
         super(id, taskName, description);
         this.epicId = epicId;
+        setTaskType(TaskType.SUBTASK);
     }
 
     public int getEpicId() {
         return epicId;
-    }
-
-    @Override
-    public TasksForFile getType() {
-        return TasksForFile.SUBTASK;
     }
 
     @Override

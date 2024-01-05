@@ -1,6 +1,6 @@
 import model.tasks.Task;
 import service.managers.Managers;
-import service.managers.TaskManager;
+import service.interfaces.TaskManager;
 
 import java.util.List;
 
