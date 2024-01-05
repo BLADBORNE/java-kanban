@@ -3,6 +3,7 @@ package service.managers;
 import model.tasks.Epic;
 import model.tasks.Subtask;
 import model.tasks.Task;
+import service.exceptions.FileIsEmptyException;
 import service.exceptions.ManagerSaveException;
 
 import java.io.*;
@@ -196,6 +197,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public static FileBackedTasksManager loadFromFile(File file) throws ManagerSaveException {
+        try {
+            if (file.length() == 0) {
+                throw new FileIsEmptyException("Считывать нечего, файл пустой");
+            }
+        } catch (FileIsEmptyException fileIsEmptyException) {
+            System.out.println(fileIsEmptyException.getMessage());
+            return null;
+        }
+
         List<String> stringList = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             while (bufferedReader.ready()) {
@@ -227,7 +237,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         for (Integer id : taskIdList) {
             if (fileBackedTasksManager.getTasks().containsKey(id)) {
                 fileBackedTasksManager.getTaskById(id);
-
             } else if (fileBackedTasksManager.getEpics().containsKey(id)) {
                 fileBackedTasksManager.getEpicById(id);
             } else {
@@ -237,24 +246,33 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return fileBackedTasksManager;
     }
 
-   public static void main(String[] args) {
+    public static void main(String[] args) {
         File file = new File("src/service/files/TasksInfo.csv");
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);
-        fileBackedTasksManager.createNewTask("Посмотреть видео на ютубе",
+        Task task = fileBackedTasksManager.createNewTask("Посмотреть видео на ютубе",
                 "Посмотреть последнее видео Димы Масленникова");
-        fileBackedTasksManager.createNewEpic("Переезд", "Нужно переехать в новый дом");
-        fileBackedTasksManager.createNewSubtask("Собрать вещи", "Нужно положить все вещи в коробки", 2);
-        fileBackedTasksManager.getTaskById(1);
-        fileBackedTasksManager.getEpicById(2);
-        fileBackedTasksManager.getSubtaskById(3);
+        Epic epic = fileBackedTasksManager.createNewEpic("Переезд", "Нужно переехать в новый дом");
+        Subtask subtask = fileBackedTasksManager.createNewSubtask("Собрать вещи",
+                "Нужно положить все вещи в коробки", epic.getId());
+        fileBackedTasksManager.getTaskById(task.getId());
+        fileBackedTasksManager.getEpicById(epic.getId());
+        fileBackedTasksManager.getSubtaskById(subtask.getId());
+
 
         try {
             FileBackedTasksManager staticFileBackedTasksManager = FileBackedTasksManager.loadFromFile(file);
-            staticFileBackedTasksManager.createNewTask("Новая обычная таска", "таска для теста");
-            staticFileBackedTasksManager.getTaskById(4);
-            staticFileBackedTasksManager.createNewSubtask("Загрузить 4 отчет", "docx по продажам",
-                    2);
-            staticFileBackedTasksManager.getSubtaskById(5);
+            Task task1 = staticFileBackedTasksManager.createNewTask("Новая обычная таска",
+                    "таска для теста");
+            staticFileBackedTasksManager.getTaskById(task1.getId());
+            Epic epic1 = staticFileBackedTasksManager.createNewEpic("Тестовый эпик",
+                    "Эпик для теста");
+            Subtask subtask1 = staticFileBackedTasksManager.createNewSubtask("Загрузить 4 отчет",
+                    "docx по продажам",
+                    epic1.getId());
+            staticFileBackedTasksManager.getEpicById(epic1.getId());
+            staticFileBackedTasksManager.getSubtaskById(subtask1.getId());
+        } catch (NullPointerException exception) {
+            System.out.println("Попытка обратить к несущ. объекту");
         } catch (ManagerSaveException exception) {
             System.out.println(exception.getMessage());
         }
