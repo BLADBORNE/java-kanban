@@ -1,10 +1,13 @@
 package service.filetools;
 
+import model.enums.TaskType;
 import model.tasks.Epic;
 import model.tasks.Subtask;
 import model.tasks.Task;
 import service.interfaces.HistoryManager;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +15,16 @@ public final class CSVFormat {
     private CSVFormat() {}
     public static Task taskFromString(String value) {
         String[] taskInfo = value.split(",");
-        if (taskInfo[1].equals("TASK")) {
-            return new Task(Integer.parseInt(taskInfo[0]), taskInfo[2], taskInfo[4]);
-        } else if (taskInfo[1].equals("EPIC")) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy; HH:mm");
+        LocalDateTime startDate = taskInfo[5].equals("null") ? null : LocalDateTime.parse(taskInfo[5], formatter);
+        if (taskInfo[1].equals(TaskType.TASK.toString())) {
+            return new Task(Integer.parseInt(taskInfo[0]), taskInfo[2], taskInfo[4], startDate,
+                    Integer.parseInt(taskInfo[7]));
+        } else if (taskInfo[1].equals(TaskType.EPIC.toString())) {
             return new Epic(Integer.parseInt(taskInfo[0]), taskInfo[2], taskInfo[4]);
         } else {
-            return new Subtask(Integer.parseInt(taskInfo[0]), taskInfo[2], taskInfo[4], Integer.parseInt(taskInfo[5]));
+            return new Subtask(Integer.parseInt(taskInfo[0]), taskInfo[2], taskInfo[4],startDate,
+                    Integer.parseInt(taskInfo[7]), Integer.parseInt(taskInfo[8]));
         }
     }
 

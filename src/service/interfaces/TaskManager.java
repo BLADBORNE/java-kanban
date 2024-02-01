@@ -5,6 +5,8 @@ import model.tasks.Subtask;
 import model.tasks.Task;
 import model.enums.TaskStatus;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,7 +17,7 @@ public interface TaskManager {
 
     Task getTaskById(int taskId);
 
-    Task createNewTask(String taskName, String description);
+    Task createNewTask(String taskName, String description, LocalDateTime startDate, int minutesDuration);
 
     void updateTask(Task newTask);
 
@@ -39,7 +41,8 @@ public interface TaskManager {
 
     Subtask getSubtaskById(int subtasksId);
 
-    Subtask createNewSubtask(String taskName, String description, int epicId);
+    Subtask createNewSubtask(String taskName, String description, LocalDateTime startDate, int minutesDuration,
+                             int epicId);
 
     void updateSubtask(Subtask newSubtask);
 
@@ -50,4 +53,6 @@ public interface TaskManager {
     int generateId();
 
     List<Task> getHistory();
+
+     List<Task> getPrioritizedTasks();
 }

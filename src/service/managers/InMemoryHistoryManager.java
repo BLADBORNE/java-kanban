@@ -1,12 +1,15 @@
 package service.managers;
 
-import model.tasks.Epic;
 import model.customnode.Node;
+import model.tasks.Epic;
 import model.tasks.Subtask;
 import model.tasks.Task;
 import service.interfaces.HistoryManager;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
     private Node<Task> head;
@@ -89,7 +92,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         node.setData(null);
         node.setPrev(null);
     }
-
 
     private List<Task> getTasks() {
         if (!customLinkedList.isEmpty()) {
