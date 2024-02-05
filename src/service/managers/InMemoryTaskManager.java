@@ -402,6 +402,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     private void updateEpicStartDate(Epic epic) {
         Map<Integer, Subtask> epicSubtasks = epic.getSubtask();
+        if (epicSubtasks.isEmpty()) {
+            epic.setStartDate(null);
+            return;
+        }
         List<Subtask> subtaskList = new ArrayList<>(epicSubtasks.values());
         Optional<Subtask> earliestSubtask = subtaskList.stream()
                 .min(Comparator.comparing(Subtask::getStartDate));
@@ -410,6 +414,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     private void updateEpicDuration(Epic epic) {
         Map<Integer, Subtask> epicSubtasks = epic.getSubtask();
+        if (epicSubtasks.isEmpty()) {
+            epic.setMinutesDuration(null);
+            return;
+        }
         Duration epicDuration = Duration.ZERO;
         for (Subtask subtask : epicSubtasks.values()) {
             Duration duration = Duration.ofMinutes(subtask.getMinutesDuration());
@@ -420,6 +428,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     private void updateEpicLastDate(Epic epic) {
         Map<Integer, Subtask> epicSubtasks = epic.getSubtask();
+        if (epicSubtasks.isEmpty()) {
+            epic.setEndDate(null);
+            return;
+        }
         List<Subtask> subtaskList = new ArrayList<>(epicSubtasks.values());
         Optional<Subtask> latestSubtask = subtaskList.stream()
                 .max(Comparator.comparing(Subtask::getStartDate));
