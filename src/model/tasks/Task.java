@@ -9,14 +9,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
-    private int id;
-    private final String taskName;
-    private final String description;
-    private TaskStatus status;
-    private TaskType taskType;
-    private Duration minutesDuration;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    protected int id;
+    protected String taskName;
+    protected String description;
+    protected TaskStatus status;
+    protected TaskType taskType;
+    protected Duration minutesDuration;
+    protected LocalDateTime startDate;
+    protected LocalDateTime endDate;
 
     public Task(int id, String taskName, String description, LocalDateTime startDate, Integer minutesDuration) {
         this.id = id;
@@ -96,9 +96,10 @@ public class Task {
         return DateTimeFormatter.ofPattern("dd.MM.yyyy; HH:mm");
     }
 
-    public static LocalDateTime compareByStartDate(Task task) {
-        if (task.getStartDate() == null)
-            return LocalDateTime.MAX;
+    public static LocalDateTime getStartTimeOrDefault(Task task) {
+        if (task == null) {
+            return LocalDateTime.MAX
+        }
         return task.getStartDate();
     }
 

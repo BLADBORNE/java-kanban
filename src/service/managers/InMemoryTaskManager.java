@@ -4,6 +4,7 @@ import model.enums.TaskStatus;
 import model.tasks.Epic;
 import model.tasks.Subtask;
 import model.tasks.Task;
+import service.exceptions.TaskNotFoundException;
 import service.exceptions.TasksIntersectException;
 import service.interfaces.HistoryManager;
 import service.interfaces.TaskManager;
@@ -18,7 +19,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
-    private final TreeSet<Task> dateSortedTasks = new TreeSet<>(Comparator.comparing(Task::compareByStartDate));
+    private final TreeSet<Task> dateSortedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTimeOrDefault));
     private int taskId = 0;
 
     @Override
@@ -409,7 +410,8 @@ public class InMemoryTaskManager implements TaskManager {
         List<Subtask> subtaskList = new ArrayList<>(epicSubtasks.values());
         Optional<Subtask> earliestSubtask = subtaskList.stream()
                 .min(Comparator.comparing(Subtask::getStartDate));
-        epic.setStartDate(earliestSubtask.get().getStartDate());
+        epic.setStartDate(earliestSubtask.orElseThrow(() -> new TaskNotFoundException("Подзадача не найдена")).
+                getStartDate());
     }
 
     private void updateEpicDuration(Epic epic) {
@@ -435,8 +437,7 @@ public class InMemoryTaskManager implements TaskManager {
         List<Subtask> subtaskList = new ArrayList<>(epicSubtasks.values());
         Optional<Subtask> latestSubtask = subtaskList.stream()
                 .max(Comparator.comparing(Subtask::getStartDate));
-
-        epic.setEndDate(latestSubtask.get().getEndDate());
+        epic.setEndDate(latestSubtask.orElseThrow(() -> new TaskNotFoundException("Подзадача не найдена")).getEndDate());
     }
 
     private boolean checkIntersection(Task newTask) {
@@ -444,7 +445,8 @@ public class InMemoryTaskManager implements TaskManager {
         List<Integer> allTasksId = getPrioritizedTasks().stream().map(Task::getId).collect(Collectors.toList());
 
         if (allTasksId.contains(newTask.getId())) {
-            Task curTask = allTasks.stream().filter(task -> task.getId() == newTask.getId()).findFirst().get();
+            Task curTask = allTasks.stream().filter(task -> task.getId() == newTask.getId()).findFirst().
+                    orElseThrow(() -> new TaskNotFoundException("Задача не найдена"));
             if (curTask.getStartDate().equals(newTask.getStartDate()) && curTask.getEndDate().
                     equals(newTask.getEndDate())) {
                 return true;
