@@ -35,6 +35,11 @@ public class Task {
         }
     }
 
+    public Task() {
+
+    }
+
+
     public void setId(int id) {
         this.id = id;
     }
@@ -98,7 +103,7 @@ public class Task {
 
     public static LocalDateTime getStartTimeOrDefault(Task task) {
         if (task == null) {
-            return LocalDateTime.MAX
+            return LocalDateTime.MAX;
         }
         return task.getStartDate();
     }

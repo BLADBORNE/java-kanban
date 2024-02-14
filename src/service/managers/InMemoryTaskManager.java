@@ -214,6 +214,21 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
+    public void deleteAllSubtasks() {
+        if (subtasks.isEmpty()) {
+            System.out.println("Удалять нечего, подзадач еще нет!");
+            return;
+        }
+
+        subtasks.values().forEach(subtask -> {
+            Epic epic = epics.get(subtask.getEpicId());
+            epic.getSubtask().clear();
+        });
+
+        subtasks.clear();
+    }
+
+    @Override
     public Subtask getSubtaskById(int subtasksId) {
         if (checkExceptionForEpicsAndSubtasks(subtasksId)) {
             return null;

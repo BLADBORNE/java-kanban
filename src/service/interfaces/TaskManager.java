@@ -48,11 +48,13 @@ public interface TaskManager {
 
     void deleteSubtaskById(int subtaskId);
 
-    TaskStatus setNewSubtaskId(int subtaskId, TaskStatus newSubtaskStatus) ;
+    void deleteAllSubtasks();
+
+    TaskStatus setNewSubtaskId(int subtaskId, TaskStatus newSubtaskStatus);
 
     int generateId();
 
     List<Task> getHistory();
 
-     List<Task> getPrioritizedTasks();
+    List<Task> getPrioritizedTasks();
 }

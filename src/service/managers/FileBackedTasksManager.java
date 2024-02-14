@@ -144,6 +144,16 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
     }
 
+    @Override
+    public void deleteAllSubtasks() {
+        super.deleteAllTasks();
+        try {
+            save();
+        } catch (ManagerSaveException exception) {
+            System.out.println(exception.getMessage());
+        }
+    }
+
     private void save() throws ManagerSaveException {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             bufferedWriter.write("id,type,name,status,description,startDate,endDate,duration,epic\n");

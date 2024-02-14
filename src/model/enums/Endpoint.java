@@ -1,0 +1,18 @@
+package model.enums;
+
+public enum Endpoint {
+    GET_TASKS,
+    GET_TASK_BY_ID,
+    POST_TASK_BY_ID,
+    POST_TASK,
+    DELETE_TASK_BY_ID,
+    DELETE_ALL_TASKS,
+    POST_SUBTASK_BY_ID,
+    POST_SUBTASK,
+    GET_EPICS_SUBTASKS,
+    POST_EPIC_BY_ID,
+    POST_EPIC,
+    GET_HISTORY,
+    GET_PRIORITIZED_TASKS,
+    UNKNOWN
+}
