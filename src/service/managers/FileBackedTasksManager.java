@@ -56,6 +56,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             System.out.println(exception.getMessage());
         }
     }
+
     @Override
     public void deleteAllTasks() {
         super.deleteAllTasks();
@@ -99,6 +100,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             System.out.println(exception.getMessage());
         }
     }
+
     @Override
     public void deleteAllEpics() {
         super.deleteAllEpics();
@@ -146,7 +148,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     @Override
     public void deleteAllSubtasks() {
-        super.deleteAllTasks();
+        super.deleteAllSubtasks();
         try {
             save();
         } catch (ManagerSaveException exception) {
@@ -154,7 +156,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
     }
 
-    private void save() throws ManagerSaveException {
+    protected void save() throws ManagerSaveException {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             bufferedWriter.write("id,type,name,status,description,startDate,endDate,duration,epic\n");
 
@@ -233,19 +235,23 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             }
 
             List<Integer> taskIdList = CSVFormat.historyFromString(stringList.get(stringList.size() - 1));
-            Collections.reverse(taskIdList);
-
-            for (Integer id : taskIdList) {
-                if (fileBackedTasksManager.getTasks().containsKey(id)) {
-                    fileBackedTasksManager.getTaskById(id);
-                } else if (fileBackedTasksManager.getEpics().containsKey(id)) {
-                    fileBackedTasksManager.getEpicById(id);
-                } else {
-                    fileBackedTasksManager.getSubtaskById(id);
-                }
-            }
+            restoreHistory(taskIdList, fileBackedTasksManager);
         }
         return fileBackedTasksManager;
+    }
+
+    protected static void restoreHistory(List<Integer> taskIdList, FileBackedTasksManager manager) {
+        Collections.reverse(taskIdList);
+
+        for (Integer id : taskIdList) {
+            if (manager.getTasks().containsKey(id)) {
+                manager.getTaskById(id);
+            } else if (manager.getEpics().containsKey(id)) {
+                manager.getEpicById(id);
+            } else {
+                manager.getSubtaskById(id);
+            }
+        }
     }
 
     private static void createInstanceofTask(Task task, FileBackedTasksManager fileBackedTasksManager) {

@@ -70,22 +70,28 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Task newTask) {
+    public Task updateTask(Task newTask) {
         if (tasks.isEmpty()) {
             System.out.println("Обновлять нечего, список пустой");
-            return;
+            return null;
         }
 
         if (!tasks.containsKey(newTask.getId())) {
             System.out.println("Извините, у нас такой заадчи нет");
-            return;
+            return null;
+        }
+
+        if (tasks.get(newTask.getId()).equals(newTask)) {
+            return null;
         }
 
         if (checkIntersection(newTask)) {
             dateSortedTasks.remove(tasks.get(newTask.getId()));
             dateSortedTasks.add(newTask);
             tasks.put(newTask.getId(), newTask);
+            return newTask;
         }
+        return null;
     }
 
     @Override
@@ -171,18 +177,23 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateEpic(Epic newEpic) {
+    public Epic updateEpic(Epic newEpic) {
         if (epics.isEmpty()) {
             System.out.println("Обновлять нечего, список пустой");
-            return;
+            return null;
         }
 
         if (!epics.containsKey(newEpic.getId())) {
             System.out.println("Извините, у нас такого эпика нет");
-            return;
+            return null;
+        }
+
+        if (epics.get(newEpic.getId()).equals(newEpic)) {
+            return null;
         }
 
         epics.put(newEpic.getId(), newEpic);
+        return newEpic;
     }
 
     @Override
@@ -263,25 +274,29 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateSubtask(Subtask newSubtask) {
+    public Subtask updateSubtask(Subtask newSubtask) {
         if (epics.isEmpty()) {
             System.out.println("Вы еще не создали ни эдин эпик, снчала создайте его");
-            return;
+            return null;
         }
 
         if (subtasks.isEmpty()) {
             System.out.println("Вы еще не создали ни одну подзадачу, создайте ее");
-            return;
+            return null;
         }
 
         if (!subtasks.containsKey(newSubtask.getId())) {
             System.out.println("Извините, у нас нет подзадачи с таким id");
-            return;
+            return null;
         }
 
         if (!epics.containsKey(newSubtask.getEpicId())) {
             System.out.println("Извините, у нас нет эпика с таким id");
-            return;
+            return null;
+        }
+
+        if (subtasks.get(newSubtask.getId()).equals(newSubtask)) {
+            return null;
         }
 
         if (checkIntersection(newSubtask)) {
@@ -307,7 +322,9 @@ public class InMemoryTaskManager implements TaskManager {
             dateSortedTasks.remove(subtasks.get(newSubtask.getId()));
             dateSortedTasks.add(newSubtask);
             subtasks.put(newSubtask.getId(), newSubtask);
+            return newSubtask;
         }
+        return null;
     }
 
     @Override
@@ -466,7 +483,7 @@ public class InMemoryTaskManager implements TaskManager {
                     equals(newTask.getEndDate())) {
                 return true;
             } else {
-                allTasks.remove(curTask.getId());
+                allTasks.remove(curTask);
                 try {
                     return checkIntersectionForAllTasks(newTask, allTasks);
                 } catch (TasksIntersectException e) {

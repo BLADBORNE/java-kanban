@@ -1,12 +1,11 @@
 package service.interfaces;
 
+import model.enums.TaskStatus;
 import model.tasks.Epic;
 import model.tasks.Subtask;
 import model.tasks.Task;
-import model.enums.TaskStatus;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public interface TaskManager {
 
     Task createNewTask(String taskName, String description, LocalDateTime startDate, int minutesDuration);
 
-    void updateTask(Task newTask);
+    Task updateTask(Task newTask);
 
     void deleteTaskById(int taskId);
 
@@ -33,7 +32,7 @@ public interface TaskManager {
 
     Epic createNewEpic(String taskName, String description);
 
-    void updateEpic(Epic newEpic);
+    Epic updateEpic(Epic newEpic);
 
     void deleteEpicById(int epicId);
 
@@ -44,7 +43,7 @@ public interface TaskManager {
     Subtask createNewSubtask(String taskName, String description, LocalDateTime startDate, int minutesDuration,
                              int epicId);
 
-    void updateSubtask(Subtask newSubtask);
+    Subtask updateSubtask(Subtask newSubtask);
 
     void deleteSubtaskById(int subtaskId);
 

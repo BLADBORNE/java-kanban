@@ -37,8 +37,4 @@ public class Subtask extends Task {
     public int hashCode() {
         return Objects.hash(super.hashCode(), epicId);
     }
-
-    public static int compareByDate(Subtask subtask1, Subtask subtask2) {
-        return subtask1.getStartDate().compareTo(subtask2.getStartDate());
-    }
 }

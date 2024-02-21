@@ -35,11 +35,6 @@ public class Task {
         }
     }
 
-    public Task() {
-
-    }
-
-
     public void setId(int id) {
         this.id = id;
     }
@@ -92,12 +87,11 @@ public class Task {
         this.endDate = endDate;
     }
 
-
     public void setMinutesDuration(Duration minutesDuration) {
         this.minutesDuration = minutesDuration;
     }
 
-    public DateTimeFormatter dateTimeFormatter() {
+    private DateTimeFormatter dateTimeFormatter() {
         return DateTimeFormatter.ofPattern("dd.MM.yyyy; HH:mm");
     }
 
