@@ -192,7 +192,10 @@ public class InMemoryTaskManager implements TaskManager {
             return null;
         }
 
+        HashMap<Integer, Subtask> oldSubtasks = getEpicById(newEpic.getId()).getSubtask();
         epics.put(newEpic.getId(), newEpic);
+        newEpic.setSubtask(oldSubtasks);
+
         return newEpic;
     }
 

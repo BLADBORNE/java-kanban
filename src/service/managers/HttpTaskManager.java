@@ -16,39 +16,27 @@ import java.util.Map;
 public class HttpTaskManager extends FileBackedTasksManager {
     private static KVTaskClient client;
 
-    public HttpTaskManager() throws ManagerSaveException {
+    public HttpTaskManager(String url) throws ManagerSaveException {
         super(null);
-        client = new KVTaskClient();
+        client = new KVTaskClient(url);
     }
 
     @Override
     protected void save() throws ManagerSaveException {
-        if (!getTasks().isEmpty()) {
-            client.put("tasks", Managers.getGson().toJson(getTasks()));
-        }
-
-        if (!getEpics().isEmpty()) {
-            client.put("epics", Managers.getGson().toJson(getEpics()));
-        }
-
-        if (!getSubtasks().isEmpty()) {
-            client.put("subtasks", Managers.getGson().toJson(getSubtasks()));
-        }
-
-        if (!getHistory().isEmpty()) {
-            client.put("history", CSVFormat.historyToString(getHistoryManager()));
-        }
+        client.put("tasks", Managers.getGson().toJson(getTasks()));
+        client.put("epics", Managers.getGson().toJson(getEpics()));
+        client.put("subtasks", Managers.getGson().toJson(getSubtasks()));
+        client.put("history", CSVFormat.historyToString(getHistoryManager()));
     }
 
-    public static HttpTaskManager loadFromFile() throws ManagerSaveException {
-        HttpTaskManager manager = new HttpTaskManager();
-        String textIfTasksIsEmpty = "Извините, у нас нет данного ключа";
+    public static HttpTaskManager loadFromServer() throws ManagerSaveException {
+        HttpTaskManager manager = new HttpTaskManager("http://localhost:8078");
         String responseTasks = client.load("tasks");
         String responseEpics = client.load("epics");
         String responseSubtasks = client.load("subtasks");
         String responseHistory = client.load("history");
 
-        if (!responseTasks.equals(textIfTasksIsEmpty)) {
+        if (responseTasks != null) {
             JsonObject jsonTasksObjects = JsonParser.parseString(responseTasks).getAsJsonObject();
             for (Map.Entry<String, JsonElement> tasksObjects : jsonTasksObjects.entrySet()) {
                 JsonObject taskObject = tasksObjects.getValue().getAsJsonObject();
@@ -58,7 +46,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
             }
         }
 
-        if (!responseEpics.equals(textIfTasksIsEmpty)) {
+        if (responseEpics != null) {
             JsonObject jsonEpicsObjects = JsonParser.parseString(responseEpics).getAsJsonObject();
             for (Map.Entry<String, JsonElement> epicsObjects : jsonEpicsObjects.entrySet()) {
                 JsonObject epicObject = epicsObjects.getValue().getAsJsonObject();
@@ -67,7 +55,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
             }
         }
 
-        if (!responseSubtasks.equals(textIfTasksIsEmpty)) {
+        if (responseSubtasks != null) {
             JsonObject jsonSubtasksObjects = JsonParser.parseString(responseSubtasks).getAsJsonObject();
             for (Map.Entry<String, JsonElement> subtasksObjects : jsonSubtasksObjects.entrySet()) {
                 JsonObject subtaskObject = subtasksObjects.getValue().getAsJsonObject();
@@ -77,7 +65,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
             }
         }
 
-        if (!responseHistory.equals(textIfTasksIsEmpty)) {
+        if (responseHistory != null) {
             List<Integer> taskIdList = CSVFormat.historyFromString(responseHistory);
             restoreHistory(taskIdList, manager);
         }

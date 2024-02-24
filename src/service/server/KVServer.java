@@ -29,6 +29,7 @@ public class KVServer {
     }
 
     private void load(HttpExchange h) throws IOException {
+        System.out.println("/load");
         if ("GET".equals(h.getRequestMethod())) {
             if (hasAuth(h)) {
                 String path = h.getRequestURI().getPath();
@@ -101,6 +102,11 @@ public class KVServer {
         server.start();
     }
 
+    public void stop() {
+        server.stop(0);
+        System.out.println("Остановили сервер на порту " + PORT);
+    }
+
     private String generateApiToken() {
         return "" + System.currentTimeMillis();
     }
@@ -123,9 +129,9 @@ public class KVServer {
     }
 
     private void sendText(HttpExchange h, String text, int status) throws IOException {
-        h.getResponseHeaders().add("Content-Type", "application/json; charset=utf-8");
-        h.sendResponseHeaders(status, 0);
         byte[] bytes = text.getBytes(UTF_8);
+        h.getResponseHeaders().add("Content-Type", "application/json; charset=utf-8");
+        h.sendResponseHeaders(status, bytes.length);
         try (OutputStream os = h.getResponseBody()) {
             os.write(bytes);
         }

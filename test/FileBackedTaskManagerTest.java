@@ -38,7 +38,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTasksMa
 
         FileBackedTasksManager newFileBackedTasksManager = FileBackedTasksManager.loadFromFile(file);
         assertNotNull(newFileBackedTasksManager);
-        assertTrue(taskManager.getEpicById(epic.getId()).getSubtask().isEmpty());
+        assertTrue(newFileBackedTasksManager.getEpicById(epic.getId()).getSubtask().isEmpty());
     }
 
     @Test

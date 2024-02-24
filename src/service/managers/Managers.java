@@ -17,8 +17,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Managers {
-    public static HttpTaskManager getDefault() throws ManagerSaveException {
-        return new HttpTaskManager();
+    public static TaskManager getDefault() throws ManagerSaveException {
+        return new HttpTaskManager("http://localhost:8078");
     }
     public static HistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();

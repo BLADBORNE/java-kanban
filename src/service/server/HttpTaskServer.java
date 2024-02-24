@@ -2,7 +2,6 @@ package service.server;
 
 import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import model.enums.Endpoint;
 import model.tasks.Epic;
@@ -25,55 +24,52 @@ public class HttpTaskServer {
 
     public HttpTaskServer() throws IOException {
         this.server = HttpServer.create(new InetSocketAddress(PORT), 0);
-        server.createContext("/tasks", new PostsHandler());
+        server.createContext("/tasks", this::handleTasks);
         this.manager = Managers.getDefault();
     }
 
+    public void handleTasks(HttpExchange exchange) throws IOException {
+        String method = exchange.getRequestMethod();
+        List<String> methods = List.of("GET", "POST", "DELETE");
 
-    private class PostsHandler implements HttpHandler {
-        @Override
-        public void handle(HttpExchange exchange) throws IOException {
-            String method = exchange.getRequestMethod();
-            List<String> methods = List.of("GET", "POST", "DELETE");
+        if (!methods.contains(method)) {
+            String message = "Мы можем обрабатывать только методы: GET POST DELETE, ваш метод - " + method;
+            sendText(exchange, message, 405);
+            return;
+        }
 
-            if (!methods.contains(method)) {
-                String message = "Мы можем обрабатывать только методы: GET POST DELETE, ваш метод - " + method;
-                sendText(exchange, message, 405);
+        Endpoint endpoint = getEndpoint(method, exchange);
+        switch (endpoint) {
+            case POST_TASK:
+                postTask(exchange);
                 return;
-            }
-
-            Endpoint endpoint = getEndpoint(method, exchange);
-            switch (endpoint) {
-                case POST_TASK:
-                    postTask(exchange);
-                    return;
-                case GET_TASKS:
-                    getTasks(exchange);
-                    return;
-                case GET_TASK_BY_ID:
-                    getTaskById(exchange);
-                    return;
-                case GET_EPICS_SUBTASKS:
-                    getEpicsSubtasks(exchange);
-                    return;
-                case GET_HISTORY:
-                    getHistory(exchange);
-                    return;
-                case GET_PRIORITIZED_TASKS:
-                    getPrioritizedTasks(exchange);
-                    return;
-                case DELETE_ALL_TASKS:
-                    deleteTasks(exchange);
-                    return;
-                case DELETE_TASK_BY_ID:
-                    deleteTaskById(exchange);
-                    return;
-                default:
-                    sendText(exchange, "Ошибка со стороны клиента\nПроверьте, пожалуйста, адрес и " +
-                            "повторите попытку.", 405);
-            }
+            case GET_TASKS:
+                getTasks(exchange);
+                return;
+            case GET_TASK_BY_ID:
+                getTaskById(exchange);
+                return;
+            case GET_EPICS_SUBTASKS:
+                getEpicsSubtasks(exchange);
+                return;
+            case GET_HISTORY:
+                getHistory(exchange);
+                return;
+            case GET_PRIORITIZED_TASKS:
+                getPrioritizedTasks(exchange);
+                return;
+            case DELETE_ALL_TASKS:
+                deleteTasks(exchange);
+                return;
+            case DELETE_TASK_BY_ID:
+                deleteTaskById(exchange);
+                return;
+            default:
+                sendText(exchange, "Ошибка со стороны клиента\nПроверьте, пожалуйста, адрес и " +
+                        "повторите попытку.", 405);
         }
     }
+
 
     private Endpoint getEndpoint(String method, HttpExchange exchange) {
         String path = exchange.getRequestURI().getPath();
@@ -417,7 +413,7 @@ public class HttpTaskServer {
         String task = exchange.getRequestURI().getPath();
         String[] tasksPath = task.split("/");
         String textIfTaskNotDeleted = "Удалять нечего, список задач пуст";
-        String textIfTaskDeleted = "Задача успешно удалена";
+        String textIfTaskDeleted = "Все задачи успешно удалены!";
 
         switch (tasksPath[2]) {
             case "task":
@@ -513,5 +509,8 @@ public class HttpTaskServer {
         return taskId;
     }
 }
+
+
+
 
 

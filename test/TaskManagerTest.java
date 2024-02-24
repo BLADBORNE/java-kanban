@@ -288,8 +288,8 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         LocalDateTime localDateTime1 = LocalDateTime.of(2042, 12, 1, 8, 30);
         LocalDateTime localDateTime2 = LocalDateTime.of(1998, 12, 1, 8, 30);
         LocalDateTime localDateTime3 = LocalDateTime.of(2021, 12, 1, 8, 30);
-        Task subtask1 = taskManager.createNewSubtask("Купить автомобиль", "we", localDateTime1, 1, epic.getId());
-        Task subtask2 = taskManager.createNewSubtask("Посмотреть видео на ютубе",
+        Subtask subtask1 = taskManager.createNewSubtask("Купить автомобиль", "we", localDateTime1, 1, epic.getId());
+        Subtask subtask2 = taskManager.createNewSubtask("Посмотреть видео на ютубе",
                 "Посмотреть последнее видео Димы Масленникова", localDateTime2, 1, epic.getId());
         taskManager.createNewSubtask("Погулять",
                 "Прогуляться по парку", localDateTime3, 5, epic.getId());

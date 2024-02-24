@@ -9,17 +9,18 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class KVTaskClient {
-    private static final String URL = "http://localhost:8078";
     private String apiKey;
     private HttpClient client;
+    private final String url;
 
-    public KVTaskClient() throws ManagerSaveException {
+    public KVTaskClient(String url) throws ManagerSaveException {
         this.client = HttpClient.newHttpClient();
+        this.url = url;
         this.apiKey = generateApiKey();
     }
 
     private String generateApiKey() throws ManagerSaveException {
-        URI uri = URI.create(URL + "/register");
+        URI uri = URI.create(url + "/register");
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri)
@@ -40,8 +41,7 @@ public class KVTaskClient {
     }
 
     public void put(String key, String json) throws ManagerSaveException {
-        URI uri = URI.create(URL + "/save/" + key + "?API_TOKEN=" + apiKey);
-        System.out.println(uri);
+        URI uri = URI.create(url + "/save/" + key + "?API_TOKEN=" + apiKey);
         final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(json);
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(body)
@@ -57,7 +57,7 @@ public class KVTaskClient {
     }
 
     public String load(String key) throws ManagerSaveException {
-        URI uri = URI.create(URL + "/load/" + key + "?API_TOKEN=" + apiKey);
+        URI uri = URI.create(url + "/load/" + key + "?API_TOKEN=" + apiKey);
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri)
@@ -65,6 +65,12 @@ public class KVTaskClient {
         try {
             HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
             HttpResponse<String> response = client.send(request, handler);
+            if (response.body().equals("Извините, у нас нет данного ключа")) {
+                return null;
+            }
+            if (response.body().replace("[]", "{}").equals("{}")) {
+                return null;
+            }
             return response.body();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

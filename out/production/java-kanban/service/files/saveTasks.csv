@@ -1,7 +1,1 @@
 id,type,name,status,description,startDate,endDate,duration,epic
-1,TASK,Купить автомобиль,NEW,we,01.12.2041; 08:30,01.12.2041; 08:31,1,
-2,EPIC,new Epic1,NEW,Новый Эпик,01.12.1999; 08:30,01.12.2021; 08:41,16,
-3,SUBTASK,New Subtask,NEW,Подзадача,01.12.1999; 08:30,01.12.1999; 08:35,5,2
-4,SUBTASK,New Subtask2,NEW,Подзадача2,01.12.2021; 08:30,01.12.2021; 08:41,11,2
-
-4,3,1,2

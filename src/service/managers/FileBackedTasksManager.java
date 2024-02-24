@@ -48,6 +48,18 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
+    public Task updateTask(Task newTask) {
+        Task task = super.updateTask(newTask);
+        try {
+            save();
+            return task;
+        } catch (ManagerSaveException exception) {
+            System.out.println(exception.getMessage());
+            return null;
+        }
+    }
+
+    @Override
     public void deleteTaskById(int taskId) {
         super.deleteTaskById(taskId);
         try {
@@ -82,6 +94,18 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     @Override
     public Epic getEpicById(int epicId) {
         Epic epic = super.getEpicById(epicId);
+        try {
+            save();
+            return epic;
+        } catch (ManagerSaveException exception) {
+            System.out.println(exception.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public Epic updateEpic(Epic newEpic) {
+        Epic epic = super.updateEpic(newEpic);
         try {
             save();
             return epic;
@@ -127,6 +151,18 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     @Override
     public Subtask getSubtaskById(int subtasksId) {
         Subtask subtask = super.getSubtaskById(subtasksId);
+        try {
+            save();
+            return subtask;
+        } catch (ManagerSaveException exception) {
+            System.out.println(exception.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public Subtask updateSubtask(Subtask newSubtask) {
+        Subtask subtask = super.updateSubtask(newSubtask);
         try {
             save();
             return subtask;
@@ -289,6 +325,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         System.out.println(fileManager.getSubtasks());
         System.out.println(fileManager.getHistory());
         System.out.println("\n\n" + "new" + "\n\n");
+        fileManager.deleteAllTasks();
+        fileManager.deleteAllEpics();
+        fileManager.deleteAllEpics();
 
         try {
             TaskManager fileBackedTasksManager = loadFromFile(new File(path));
