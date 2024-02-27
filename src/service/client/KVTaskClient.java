@@ -68,9 +68,11 @@ public class KVTaskClient {
             if (response.body().equals("Извините, у нас нет данного ключа")) {
                 return null;
             }
-            if (response.body().replace("[]", "{}").equals("{}")) {
+
+            if (response.body().equals("[]")) {
                 return null;
             }
+
             return response.body();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

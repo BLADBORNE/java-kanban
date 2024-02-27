@@ -270,7 +270,7 @@ public class HttpTaskServerAndKVServerTest {
     }
 
     @Test
-    public void shouldCreateNewEpicAndKVServerEpicEqualsCreatedEpic() throws ManagerSaveException {
+    public void shouldCreateNewEpicAndKVServerEpicEqualsCreatedEpic() throws ManagerSaveException, InterruptedException {
         Epic epic = new Epic(1, "Epic", "Epic1");
 
         URI uri = URI.create(URL + "/epic");
@@ -770,7 +770,6 @@ public class HttpTaskServerAndKVServerTest {
             throw new ManagerSaveException("Ошибка при выполнении запроса");
         }
 
-        Thread.sleep(10);
         HttpTaskManager newUpdateManager = HttpTaskManager.loadFromServer();
         assertNotNull(newUpdateManager);
         assertEquals(1, newUpdateManager.getSubtasks().size());
@@ -846,7 +845,7 @@ public class HttpTaskServerAndKVServerTest {
             throw new ManagerSaveException("Ошибка при выполнении запроса");
         }
 
-        Thread.sleep(100);
+        Thread.sleep(10);
         HttpTaskManager newUpdateManager = HttpTaskManager.loadFromServer();
         assertNotNull(newUpdateManager);
         assertEquals(0, newUpdateManager.getSubtasks().size());

@@ -70,7 +70,6 @@ public class HttpTaskServer {
         }
     }
 
-
     private Endpoint getEndpoint(String method, HttpExchange exchange) {
         String path = exchange.getRequestURI().getPath();
         String[] pathValues = path.split("/");
@@ -225,7 +224,6 @@ public class HttpTaskServer {
         sendText(exchange, response, 200);
     }
 
-
     private void getTaskById(HttpExchange exchange) throws IOException {
         int taskId = checkNumberFormatException(exchange);
 
@@ -263,7 +261,6 @@ public class HttpTaskServer {
         sendText(exchange, "Извините, у нас нет задачи с таким id", 405);
     }
 
-
     private void getHistory(HttpExchange exchange) throws IOException {
         if (manager.getHistory().isEmpty()) {
             sendText(exchange, "История просмотра пуста", 200);
@@ -281,7 +278,6 @@ public class HttpTaskServer {
 
         sendText(exchange, Managers.getGson().toJson(manager.getPrioritizedTasks()), 200);
     }
-
 
     private void getEpicsSubtasks(HttpExchange exchange) throws IOException {
         int epicId = checkNumberFormatException(exchange);
@@ -408,7 +404,6 @@ public class HttpTaskServer {
         sendText(exchange, "При создании, задачи не должны пересекаться!\nВыберите другое время", 405);
     }
 
-
     private void deleteTasks(HttpExchange exchange) throws IOException {
         String task = exchange.getRequestURI().getPath();
         String[] tasksPath = task.split("/");
@@ -494,7 +489,6 @@ public class HttpTaskServer {
         sendText(exchange, "Извините, у нас нет задачи с таким id", 405);
     }
 
-
     private int checkNumberFormatException(HttpExchange exchange) throws IOException {
         String query = exchange.getRequestURI().getQuery();
         String[] queryValues = query.split("=");
@@ -509,8 +503,3 @@ public class HttpTaskServer {
         return taskId;
     }
 }
-
-
-
-
-

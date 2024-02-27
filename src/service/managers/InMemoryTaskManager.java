@@ -520,7 +520,6 @@ public class InMemoryTaskManager implements TaskManager {
                 isAfter(task.getStartDate()) && newTask.getEndDate().isBefore(task.getEndDate())));
     }
 
-
     public HistoryManager getHistoryManager() {
         return historyManager;
     }

@@ -1,13 +1,10 @@
 import model.enums.TaskStatus;
-import model.enums.TaskType;
 import model.tasks.Epic;
 import model.tasks.Subtask;
 import model.tasks.Task;
 import org.junit.jupiter.api.Test;
-import service.exceptions.TasksIntersectException;
 import service.interfaces.TaskManager;
 
-import java.lang.reflect.Executable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -317,13 +314,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldReturnNewUpdateTaskWhenNewUpdateTasksTimeEqualsCreatedTime() {
-
-
-    }
-
-    @Test
-    public void shouldReturnNewUpdateTaskWhenNewUpdateTasksTimeHasNotCrossingWithOneDifferentCreatedTask() {
+    public void shouldReturnNewUpdateTaskWhenNewUpdateTasksTimeEqualsCreatedTasksTime() {
         LocalDateTime localDateTime = LocalDateTime.of(2021, 12, 1, 8, 30);
         Task task = taskManager.createNewTask("TestTask", "Test", localDateTime, 10);
 
@@ -334,14 +325,30 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertFalse(taskManager.getTasks().containsValue(task));
         assertTrue(taskManager.getTasks().containsValue(newTask));
         assertEquals(newTask, taskManager.getTaskById(newTask.getId()));
+    }
 
+    @Test
+    public void shouldReturnNewUpdateTaskWhenNewUpdateTasksTimeHasNotCrossingWithOneDifferentCreatedTasksTime() {
+        LocalDateTime localDateTime2 = LocalDateTime.of(2021, 12, 1, 10, 30);
+        Task task2 = taskManager.createNewTask("TestTask", "Test", localDateTime2, 10);
+        LocalDateTime localDateTime = LocalDateTime.of(2021, 12, 1, 9, 30);
+        Task task = taskManager.createNewTask("TestTask", "Test", localDateTime, 10);
+
+        Task newTask = new Task(task.getId(), "Купить автомобиль", "we", localDateTime,
+                10);
+        assertTrue(taskManager.getTasks().containsValue(task));
+        assertTrue(taskManager.getTasks().containsValue(task2));
+        taskManager.updateTask(newTask);
+        assertFalse(taskManager.getTasks().containsValue(task));
+        assertTrue(taskManager.getTasks().containsValue(newTask));
+        assertEquals(newTask, taskManager.getTaskById(newTask.getId()));
     }
 
     @Test
     public void shouldThrownAnExceptionWhenNewUpdateTaskHasCrossingWithOneDifferentCreatedTask() {
         LocalDateTime localDateTime1 = LocalDateTime.of(2021, 12, 1, 8, 30);
-        LocalDateTime localDateTime2 = LocalDateTime.of(2021, 12, 1, 8, 50);
-        taskManager.createNewTask("TestTask", "Test", localDateTime1, 35);
+        LocalDateTime localDateTime2 = LocalDateTime.of(2021, 12, 1, 8, 30);
+        taskManager.createNewTask("TestTask", "Test", localDateTime1, 25);
         Task newTask = taskManager.createNewTask("Купить автомобиль", "we",
                 localDateTime2, 5);
         assertNull(newTask);

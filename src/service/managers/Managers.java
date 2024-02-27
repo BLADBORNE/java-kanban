@@ -12,7 +12,6 @@ import service.exceptions.ManagerSaveException;
 import service.interfaces.HistoryManager;
 import service.interfaces.TaskManager;
 
-import java.io.File;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -20,9 +19,11 @@ public class Managers {
     public static TaskManager getDefault() throws ManagerSaveException {
         return new HttpTaskManager("http://localhost:8078");
     }
+
     public static HistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();
     }
+
     public static Gson getGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Duration.class, new DurationAdapter());
